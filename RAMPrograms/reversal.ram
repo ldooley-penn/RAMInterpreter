@@ -1,0 +1,36 @@
+// Copy into r2
+assign r2, r1
+clr r1
+
+// ---- Pluck first character from r2 to r3 ---- //
+0: jmpb r2, 0, 1
+jmpb r2, 1, 2
+continue
+
+// Move 0 from r2 to r3
+1: tail r2
+add r3, 0
+gotob 3
+
+// Move 1 from r2 to r3
+2: tail r2
+add r3, 1
+gotob 3
+
+// ---- Append r1 to r3 ----- //
+3: jmpb r1, 0, 4
+jmpb r1, 1, 5
+// r1 is empty, move r3 into r1 and clear r3
+assign r1, r3
+clr r3
+gotoa 0
+
+// Move 0 from r1 to r3
+4: tail r1
+add r3, 0
+gotoa 3
+
+// Move 1 from r1 to r3
+5: tail r1
+add r3, 1
+gotoa 3

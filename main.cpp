@@ -179,7 +179,7 @@ private:
         // Implementation for JMPA
         const Instruction& instr = m_instructions[m_programCounter];
         char targetSymbol = instr.symbol + '0';
-        if(m_registers[instr.reg_source].size() > 0 && m_registers[instr.reg_source].back() == targetSymbol) {
+        if(m_registers[instr.reg_source].size() > 0 && m_registers[instr.reg_source].front() == targetSymbol) {
             m_programCounter = FindLineNumberAbove(instr.line_number_dest);
         }
         else{
@@ -191,7 +191,7 @@ private:
         // Implementation for JMPB
         const Instruction& instr = m_instructions[m_programCounter];
         char targetSymbol = instr.symbol + '0';
-        if(m_registers[instr.reg_source].size() > 0 && m_registers[instr.reg_source].back() == targetSymbol) {
+        if(m_registers[instr.reg_source].size() > 0 && m_registers[instr.reg_source].front() == targetSymbol) {
             m_programCounter = FindLineNumberBelow(instr.line_number_dest);
         }
         else{
@@ -220,20 +220,9 @@ private:
     void PrintState() {
         std::cout << "PC: " << m_programCounter << " | ";
         if(m_programCounter < m_instructions.size()){
-            switch(m_instructions[m_programCounter].opcode) {
-                case OpCode::ADD: std::cout << "ADD"; break;
-                case OpCode::TAIL: std::cout << "TAIL"; break;
-                case OpCode::CLR: std::cout << "CLR"; break;
-                case OpCode::ASSIGN: std::cout << "ASSIGN"; break;
-                case OpCode::GOTOA: std::cout << "GOTOA"; break;
-                case OpCode::GOTOB: std::cout << "GOTOB"; break;
-                case OpCode::JMPA: std::cout << "JMPA"; break;
-                case OpCode::JMPB: std::cout << "JMPB"; break;
-                case OpCode::CONTINUE: std::cout << "CONTINUE"; break;
-            }
+            std::cout<< m_instructions[m_programCounter].ToString() << " | ";
         }
-        std::cout<< " | ";
-        for(size_t i = 0; i < m_registers.size(); i++) {
+        for(size_t i = 1; i < m_registers.size(); i++) {
             std::cout << "r" << i << ": \"" << m_registers[i] << "\" ";
         }
         std::cout << std::endl;
@@ -268,6 +257,10 @@ OpCode parseOpCode(const std::string& str) {
 bool parseInstruction(std::string& line, Instruction& outInstruction){
     if(line.empty()){
         return false;
+    }
+
+    if(line.compare(0, 2, "//") == 0) {
+        return false; // Skip comment lines
     }
 
     std::replace(line.begin(), line.end(), ',', ' ');
