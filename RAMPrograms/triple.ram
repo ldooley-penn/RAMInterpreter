@@ -1,0 +1,29 @@
+// Use r2 as the source of truth for copying
+assign r2, r1
+
+// Use r3 for counter
+add r3, 0
+add r3, 0
+
+// Decrement counter and launch into loop
+0: jmpb r3, 0, 1
+continue
+
+// Append r2 to r1 loop
+1: tail r3
+// Use r4 for mutable copy
+assign r4, r2
+
+2: jmpb r4, 0, 3
+jmpb r4, 1, 4
+gotoa 0
+
+// Move 0 from r4 to r1
+3: tail r4
+add r1, 0
+gotoa 2
+
+// Move 1 from r4 to r1
+4: tail r4
+add r1, 1
+gotoa 2
