@@ -1,5 +1,3 @@
-r1=hello_
-r2=world
 assign r3,r1
 assign r4,r2
 0 jmpb r4,0,1
