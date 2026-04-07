@@ -231,7 +231,7 @@ private:
     void PrintProgram() {
         std::cout << "Program Instructions:" << std::endl;
         for(size_t i = 0; i < m_instructions.size(); i++) {
-            std::cout << "\t" << (i == m_programCounter ? "-> " : "   ") << m_instructions[i].ToString() << std::endl;
+            std::cout << "\t" << m_instructions[i].ToString() << std::endl;
         }
     }
 
@@ -324,6 +324,8 @@ bool parseInstruction(std::string& line, Instruction& outInstruction){
     default:
         throw std::invalid_argument("Unknown opcode: " + token);
     } 
+
+    return true;
 }
 
 int main(int argc, char* argv[]) {

@@ -1,12 +1,12 @@
 assign r3,r1
 assign r4,r2
-0 jmpb r4,0,1
+0: jmpb r4,0,1
 jmpb r4,1,2
 gotob 3
-1 add r3,0
+1: add r3,0
 tail r4
 gotoa 0
-2 add r3,1
+2: add r3,1
 tail r4
 gotoa 0
-3 assign r1,r3
+3: assign r1,r3
